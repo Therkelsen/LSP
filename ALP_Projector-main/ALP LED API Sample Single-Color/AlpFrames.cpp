@@ -28,7 +28,7 @@ CAlpFramesMovingSquare::CAlpFramesMovingSquare(const long nFrameCount, const lon
 	printf("\nnHeight: %ld", nHeight);
 	const long nSquareWidth = nWidth;
 	const long nSquareHeight = nHeight;
-	FillRect(0, 0, 0, nSquareWidth, nSquareHeight, 255, 5);	// bright
+	FillRect(0, 0, 0, nSquareWidth, nSquareHeight, 255, space);	// bright
 	//for (long nFrame = 1; nFrame <= nFrameCount; nFrame++)
 	//{
 	//	printf("\nnFrame: %ld", nFrame);

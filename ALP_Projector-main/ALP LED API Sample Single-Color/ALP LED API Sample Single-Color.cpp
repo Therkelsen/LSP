@@ -34,7 +34,8 @@ int generate_pattern(const long Frames = 1, const long spacing = 4, const long b
 	// Allocate a sequence and load data
 	VERIFY_ALP_NO_ECHO( AlpSeqAlloc( AlpDevId, 1, nFrames, &AlpSeqId ) );
 	VERIFY_ALP_NO_ECHO( AlpSeqPut( AlpDevId, AlpSeqId, 0, nFrames, ImageData(0) ) );
-	VERIFY_ALP_NO_ECHO( AlpSeqTiming( AlpDevId, AlpSeqId, 0, 200000, 0, 0, 0 ) );// 200ms, i.e. 5Hz
+	// 200ms, i.e. 5Hz - Input "1000" for 1[s]
+	VERIFY_ALP_NO_ECHO( AlpSeqTiming( AlpDevId, AlpSeqId, 0, 200000, 0, 0, 0 ) );
 
  /* LED Stuff 
 	 Initialize a LED.
@@ -47,6 +48,7 @@ int generate_pattern(const long Frames = 1, const long spacing = 4, const long b
 	long const LedType = ALP_HLD_PT120_BLUE;
 	VERIFY_ALP_NO_ECHO( AlpLedAlloc( AlpDevId, LedType, NULL, &AlpLedId ) );
 
+	// Inquire Madav about this vv
 	// Just for information: inquire the allowed continuous forward current of this LED type
 	long nLedContCurrent_mA(0);
 	VERIFY_ALP_NO_ECHO( AlpLedInquire( AlpDevId, AlpLedId, ALP_LED_SET_CURRENT, &nLedContCurrent_mA ) );
@@ -120,10 +122,5 @@ int generate_pattern(const long Frames = 1, const long spacing = 4, const long b
 	_tprintf( _T("Finished.\r\n") );
 	Pause();
 	return 0;
-}
-
-void main()
-{
-	generate_pattern(1, 4, 100);
 }
 
