@@ -1,0 +1,8 @@
+﻿  AlpFrames.cpp
+C:\Users\Madav Sridhar\OneDrive - Syddansk Universitet\LSP\FlexDraper-VisionSystem\Code\TestPrograms\ALP_Projector\ALP LED API Sample Single-Color\AlpFrames.cpp(47,9): warning C4129: 'm': unrecognized character escape sequence
+C:\Users\Madav Sridhar\OneDrive - Syddansk Universitet\LSP\FlexDraper-VisionSystem\Code\TestPrograms\ALP_Projector\ALP LED API Sample Single-Color\AlpFrames.cpp(44,50): warning C4100: 'nFrameNumber': unreferenced formal parameter
+C:\Users\Madav Sridhar\OneDrive - Syddansk Universitet\LSP\FlexDraper-VisionSystem\Code\TestPrograms\ALP_Projector\ALP LED API Sample Single-Color\AlpFrames.cpp(52,42): warning C4100: 'nX': unreferenced formal parameter
+C:\Users\Madav Sridhar\OneDrive - Syddansk Universitet\LSP\FlexDraper-VisionSystem\Code\TestPrograms\ALP_Projector\ALP LED API Sample Single-Color\AlpFrames.cpp(58,81): warning C4100: 'nTop': unreferenced formal parameter
+C:\Users\Madav Sridhar\OneDrive - Syddansk Universitet\LSP\FlexDraper-VisionSystem\Code\TestPrograms\ALP_Projector\ALP LED API Sample Single-Color\AlpFrames.cpp(58,63): warning C4100: 'nLeft': unreferenced formal parameter
+C:\Users\Madav Sridhar\OneDrive - Syddansk Universitet\LSP\FlexDraper-VisionSystem\Code\TestPrograms\ALP_Projector\ALP LED API Sample Single-Color\AlpFrames.cpp(58,38): warning C4100: 'nFrameNumber': unreferenced formal parameter
+  ALP LED API Sample Single-Color.vcxproj -> C:\Users\Madav Sridhar\OneDrive - Syddansk Universitet\LSP\FlexDraper-VisionSystem\Code\TestPrograms\ALP_Projector\ALP LED API Sample Single-Color\Debug\ALP LED API Sample Single-Color.exe
