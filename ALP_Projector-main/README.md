@@ -1,16 +1,17 @@
 # ALP Projector
-This project was handed to us by Madav, who took sample code and made it work with the projector.
-Our goal is to refactor the projector code into a class, from which you can easily interface with 
-our or any projector from the same brand of projectors.
+This is a project for LSP, wherein we are to R&D an interface for a projector, and further down the line a camera as well.
+
+The project with pre-existing code was handed to us by Madav, who took sample code and made it work with the projector. Our goal is to refactor the projector code into a class and improve it, from which you can easily interface with our or any projector from the same brand of projectors.
 
 ## Goals
 ### Refactor
 - [ ] Move everything to a Projector class
 - [ ] Generalize the methods to allow for intercompatibility
-- [ ] Make member variables with getters/setters
+- [ ] Make hardcoded variables into member variables with get/set methods
 - [ ] Add good comments / fix the ones that arent
+- [ ] Finding an alternative to memset, for programming patterns
 
 ### Improve
 - [ ] Add projector patterns that seem useful
-- [ ] Add user interaction on a higher level than through a main method
+- [ ] Prepare for front-end integration, i.e. GUI's etc.
 - [ ] Remember good comments!
