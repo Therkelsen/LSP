@@ -3,7 +3,7 @@
 #include <memory.h>
 #include <stdio.h>
 #include <typeinfo>
-
+#include "Windows.h"
 CAlpFrames::CAlpFrames(const long nFrameCount, const long nWidth, const long nHeight, long space) :	m_nFrameCount(nFrameCount), m_nWidth(nWidth), m_nHeight(nHeight), m_pImageData(new char unsigned[nFrameCount*nWidth*nHeight])
 {
 	printf("\nIn AlpFrames -> Constructor");
@@ -16,8 +16,10 @@ CAlpFrames::CAlpFrames(const long nFrameCount, const long nWidth, const long nHe
 CAlpFrames::~CAlpFrames(void)
 {
 	printf("\nIn AlpFrames -> Deconstructor");
-
-	delete[] m_pImageData;
+	//memset(m_pImageData, 1, m_nWidth * m_nHeight);
+	//ZeroMemory(m_pImageData, m_nWidth * m_nHeight);
+	//free(m_pImageData);
+	//delete[] m_pImageData;
 }
 
 CAlpFramesMovingSquare::CAlpFramesMovingSquare(const long nFrameCount, const long nWidth, const long nHeight, long space) :	CAlpFrames(nFrameCount, nWidth, nHeight, space)

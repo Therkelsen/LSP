@@ -123,4 +123,3 @@ int generate_pattern(const long Frames = 1, const long spacing = 4, const long b
 	Pause();
 	return 0;
 }
-
