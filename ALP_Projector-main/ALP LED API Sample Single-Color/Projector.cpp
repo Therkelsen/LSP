@@ -93,7 +93,7 @@ int Projector::generatePattern(const long frames, const long spacing, const unsi
 
 void Projector::setImageDataParams(const long frames, const long spacing, const unsigned long pictureTime, const long brightness) {
 	_frames = frames;
-	_space = spacing;
+	_spacing = spacing;
 	_pictureTime = pictureTime;
 	_brightness = brightness;
 }
