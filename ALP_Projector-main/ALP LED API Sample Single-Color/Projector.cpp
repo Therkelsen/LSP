@@ -76,6 +76,8 @@ int Projector::initializeProjector(){
 */
 
 int Projector::generatePattern(const long frames, const long spacing, const unsigned long pictureTime, const long brightness) {
+	initializeProjector();
+	
 	setImageDataParams(frames, spacing, pictureTime, brightness);
 
 	CAlpFramesMovingSquare ImageData(_frames, _width, _height, _spacing);
@@ -85,8 +87,6 @@ int Projector::generatePattern(const long frames, const long spacing, const unsi
 	VERIFY_ALP_NO_ECHO(AlpSeqTiming(AlpDevId, AlpSeqId, _illuminateTime, _pictureTime, _synchDelay, _synchPulseWidth, _triggerInDelay));
 
 	initializeLED(brightness);
-
-	gatedSynch();
 
 	display();
 
@@ -160,6 +160,8 @@ void Projector::setTimingParams(const unsigned long illuminateTime, const unsign
 *
 * @note Single-Color configurations usually have bus addresses 24, 64.
 * 
+* @note AlpDevControlEx: Set up synchronization pins to conditionally output frame synch pulses.
+* 
 * @return int 0 on success, 1 on failure
 */
 int Projector::initializeLED(const long brightness) {
@@ -173,31 +175,9 @@ int Projector::initializeLED(const long brightness) {
 	_tprintf( _T("The LED driver has I2C bus addresses DAC=%i, ADC=%i\r\n"), _LEDParams.I2cDacAddr, _LEDParams.I2cAdcAddr);
 
 	VERIFY_ALP_NO_ECHO(AlpLedControl(AlpDevId, AlpLedId, ALP_LED_BRIGHTNESS, _brightness));
-	return 0;
-}
-
-/**
-* @brief Asserts the Gated Synch signal permanently for certain ViALUX single-LED devices
-*
-* This method uses the `AlpDevControlEx` function to permanently assert the Gated Synch signal.
-* This is achieved by filling out the `tAlpDynSynchOutGate` data structure and setting the `Period` member to `1`.
-* This results in a permanent high level signal being sent to Gated Synch 3 on the device. Resulting in the
-* LED constantly being on.
-* 
-* @note _ASSERT: verify that the compiler correctly aligns members of this structure. tAlpDynSynchOutGate is a struct 
-* with period, polarity and gate as membervariables i.e. 18 bytes in total.
-* 
-* @note memset: at a given memory address, set a given value for a given amount of bytes
-*
-* This method is usually used in single-LED devices where the LED enable is connected to Gated Synch 3.
-*/
-int Projector::gatedSynch() {
-	_ASSERT(sizeof(_AlpSynchGate) == 18);
-	memset(&_AlpSynchGate, 0, sizeof(_AlpSynchGate)); // research better ways to do this
-
-	_AlpSynchGate.Period = 1;
 
 	VERIFY_ALP_NO_ECHO(AlpDevControlEx(AlpDevId, ALP_DEV_DYN_SYNCH_OUT3_GATE, &_AlpSynchGate));
+
 	return 0;
 }
 

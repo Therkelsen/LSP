@@ -9,7 +9,7 @@ The project with pre-existing code was handed to us by Madav, who took sample co
 - [x] Generalize the methods to allow for intercompatibility
 - [x] Make hardcoded variables into member variables with get/set methods
 - [ ] Add good comments / fix the ones that arent
-- [ ] Finding an alternative to memset, for programming patterns
+- [x] Finding an alternative to memset, for programming patterns
 
 ### Improve
 - [ ] Add projector patterns that seem useful

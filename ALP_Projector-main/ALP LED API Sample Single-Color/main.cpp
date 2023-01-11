@@ -12,6 +12,6 @@ int main() {
 	P.printParameters(P.getImageDataParams());
 	P.printParameters(P.getSequenceParams());
 	P.printParameters(P.getTimingParams());
-	P.initializeProjector(); std::cout << "initializeProjector called" << std::endl;
+
 	P.generatePattern(frames, spacing, pictureTime, brightness);
 }

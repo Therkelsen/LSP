@@ -37,11 +37,17 @@ public:
 		_LEDContCurrent = 0;
 		_LEDCurrent = 0, _LEDJunctionTemp = 0, deviceNum = 0, initFlag = 0;
 		_sleepTime = 1000;
+
+		// _ASSERT creates a macro
+		_ASSERT(sizeof(_AlpSynchGate) == 18);
+		// memset: Sets the first `num` bytes of the block of memory pointed by `ptr` to the specified value 
+		// (interpreted as an `unsigned char`). memset is used, as `_AlpSynchGate` already has memory allocated.
+		memset(&_AlpSynchGate, 0, sizeof(_AlpSynchGate));
+
+		_AlpSynchGate.Period = 1;
 	};
 
 	virtual ~Projector();
-
-	int initializeProjector();
 
 	int generatePattern(const long frames = 1, const long spacing = 4, const unsigned long pictureTime = 200000, const long brightness = 100);
 
@@ -57,10 +63,9 @@ public:
 	bool checkLEDExceedsLimits();
 
 private:
+	int initializeProjector();
 
 	int initializeLED(long brightness = 100);
-
-	int gatedSynch();
 
 	int display();
 	
