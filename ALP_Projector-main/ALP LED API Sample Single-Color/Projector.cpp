@@ -22,7 +22,15 @@
 
 #include "Projector.h"
 
-Projector::~Projector() {}
+Projector::~Projector() {
+	try{
+		AlpDevHalt(AlpDevId);
+		AlpDevFree(AlpDevId);
+	} catch (...) {
+		_tprintf(_T("\r\nWarning: An error occured when deallocating memory!\r\n"));
+	}
+	_tprintf(_T("\r\nProjector deconstructor called, memory deallocated.\r\n"));
+}
 
 /**
 * @brief Initialize the ALP device and sets the projector's dimensions
@@ -85,30 +93,48 @@ int Projector::generatePattern(const long frames, const long spacing, const unsi
 	return 0;
 }
 
-//std::vector<std::variant< long, long, unsigned long, long >> Projector::getImageDataParams()
-//{
-//	std::vector<std::variant<long, long, unsigned long, long>> params{_frames, _spacing, _pictureTime, _brightness };
-//	return ;
-//}
+std::vector<unsigned long> Projector::getImageDataParams() const {
+	return std::vector<unsigned long>{(unsigned long)_frames, (unsigned long)_spacing, _pictureTime, (unsigned long)_brightness};
+}
+
+std::vector<unsigned long> Projector::getSequenceParams() const {
+	return std::vector<unsigned long>{ unsigned long(_bitPlanes), unsigned long(_pictureOffset)};
+}
+
+std::vector<unsigned long> Projector::getTimingParams() const {
+	return std::vector<unsigned long> {_illuminateTime, _pictureTime, _synchDelay, _synchPulseWidth, _triggerInDelay};
+}
+
+void Projector::printParameters(std::vector<unsigned long> const params) const {
+	for (auto i : params) {
+		_tprintf(_T("%i "), i);
+	}
+	_tprintf(_T("\r\n"));
+}
+
+bool Projector::checkLEDExceedsLimits() {
+	if (_LEDJunctionTemp < 0) {
+		_tprintf(_T("\nWarning: It seems like the thermistor cable is not properly connected.\r"));
+		return true;
+	}
+	if (_LEDJunctionTemp > 100 * 256) {
+		_tprintf(_T("\nWarning: LED becomes quite hot. Stopping.\r"));
+		return true;
+	}
+	return false;
+}
 
 void Projector::setImageDataParams(const long frames, const long spacing, const unsigned long pictureTime, const long brightness) {
-	_frames = frames;
-	_spacing = spacing;
-	_pictureTime = pictureTime;
-	_brightness = brightness;
+	_frames = frames; _spacing = spacing; _pictureTime = pictureTime; _brightness = brightness;
 }
 
 void Projector::setSequenceParams(const long bitPlanes, const long pictureOffset) {
-	_bitPlanes = bitPlanes;
-	_pictureOffset = pictureOffset;
+	_bitPlanes = bitPlanes; _pictureOffset = pictureOffset;
 }
 
 void Projector::setTimingParams(const unsigned long illuminateTime, const unsigned long pictureTime, const unsigned long synchDelay, const unsigned long synchPulseWidth, const unsigned long triggerInDelay){
-	_illuminateTime = illuminateTime;
-	_pictureOffset = pictureTime;
-	_synchDelay = synchDelay;
-	_synchPulseWidth = synchPulseWidth;
-	_triggerInDelay = triggerInDelay;
+	_illuminateTime = illuminateTime; _pictureOffset = pictureTime; _synchDelay = synchDelay;
+	_synchPulseWidth = synchPulseWidth; _triggerInDelay = triggerInDelay;
 }
 
 /**
@@ -137,8 +163,8 @@ void Projector::setTimingParams(const unsigned long illuminateTime, const unsign
 * @return int 0 on success, 1 on failure
 */
 int Projector::initializeLED(const long brightness) {
-	_brightness = brightness;
-	VERIFY_ALP_NO_ECHO(AlpLedAlloc(AlpDevId, _ledType, NULL, &AlpLedId));
+	setImageDataParams(_frames, _spacing, _pictureTime, brightness);
+	VERIFY_ALP_NO_ECHO(AlpLedAlloc(AlpDevId, _LEDType, NULL, &AlpLedId));
 
 	VERIFY_ALP_NO_ECHO(AlpLedInquire(AlpDevId, AlpLedId, ALP_LED_SET_CURRENT, &_LEDContCurrent));
 	_tprintf( _T("This LED can be driven with continuous current of %0.1f A\r\n"), (double)_LEDContCurrent/1000. );
@@ -147,6 +173,7 @@ int Projector::initializeLED(const long brightness) {
 	_tprintf( _T("The LED driver has I2C bus addresses DAC=%i, ADC=%i\r\n"), _LEDParams.I2cDacAddr, _LEDParams.I2cAdcAddr);
 
 	VERIFY_ALP_NO_ECHO(AlpLedControl(AlpDevId, AlpLedId, ALP_LED_BRIGHTNESS, _brightness));
+	return 0;
 }
 
 /**
@@ -171,6 +198,7 @@ int Projector::gatedSynch() {
 	_AlpSynchGate.Period = 1;
 
 	VERIFY_ALP_NO_ECHO(AlpDevControlEx(AlpDevId, ALP_DEV_DYN_SYNCH_OUT3_GATE, &_AlpSynchGate));
+	return 0;
 }
 
 /**
@@ -201,30 +229,21 @@ int Projector::gatedSynch() {
 int Projector::display() {
 	VERIFY_ALP_NO_ECHO(AlpProjStartCont(AlpDevId, AlpSeqId));
 
-	// Monitor LED current and temperature (run until a key has been hit, or until "break;")
-	_tprintf(_T("\r\nPress a key to stop projection.\r\n"));
+	_tprintf(_T("\r\nPress any key to stop projection.\r\n"));
 	while (_kbhit() == 0) {
 		Sleep(_sleepTime);
 
 		VERIFY_ALP_NO_ECHO(AlpLedInquire(AlpDevId, AlpLedId, ALP_LED_MEASURED_CURRENT, &_LEDCurrent));
 		VERIFY_ALP_NO_ECHO(AlpLedInquire(AlpDevId, AlpLedId, ALP_LED_TEMPERATURE_JUNCTION, &_LEDJunctionTemp));
 
-		_tprintf(_T("Note: Actual LED current=%0.1f A; Junction Temperature=%0.1f °C\r"),
+		_tprintf(_T("Note: LED current=%0.1f A; Junction Temperature=%0.1f \370C\r"),
 			(double)_LEDCurrent / 1000, (double)_LEDJunctionTemp / 256);
 
-		if (_LEDJunctionTemp < 0)
-			_tprintf(_T("\nWarning: It seems like the thermistor cable is not properly connected.\r"));
-
-		if (_LEDJunctionTemp > 100 * 256) {
-			_tprintf(_T("\nWarning: LED becomes quite hot. Stopping.\r"));
+		if (checkLEDExceedsLimits())
 			break;
-		}
 	}
-	_tprintf(_T("\r\n\r\n"));
-
-	VERIFY_ALP_NO_ECHO(AlpDevHalt(AlpDevId));
-	VERIFY_ALP_NO_ECHO(AlpDevFree(AlpDevId));
-	_tprintf(_T("Finished.\r\n"));
+	_tprintf(_T("\r\n\r\nFinished.\r\n"));
 	Pause();
+	return 0;
 }
 

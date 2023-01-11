@@ -1,19 +1,4 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(517,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (ALP LED API Sample Single-Color.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   Projector.cpp
-C:\Users\Therkelsen\Documents\Github\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\Projector.cpp(1): warning C4634: XML document comment: cannot be applied:  Discarding XML document comment for invalid target.
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\include\variant(13): warning STL4038: The contents of <variant> are available only with C++17 or later.
-C:\Users\Therkelsen\Documents\Github\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\Projector.h(30,19): error C2039: 'variant': is not a member of 'std'
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\include\vector(24,1): message : see declaration of 'std'
-C:\Users\Therkelsen\Documents\Github\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\Projector.h(30,26): error C2065: 'variant': undeclared identifier
-C:\Users\Therkelsen\Documents\Github\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\Projector.h(30,27): error C2059: syntax error: 'const'
-C:\Users\Therkelsen\Documents\Github\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\Projector.h(30,58): error C2059: syntax error: '>'
-C:\Users\Therkelsen\Documents\Github\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\Projector.h(30,81): error C2238: unexpected token(s) preceding ';'
-  main.cpp
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\include\variant(13): warning STL4038: The contents of <variant> are available only with C++17 or later.
-C:\Users\Therkelsen\Documents\Github\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\Projector.h(30,19): error C2039: 'variant': is not a member of 'std'
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\include\vector(24,1): message : see declaration of 'std'
-C:\Users\Therkelsen\Documents\Github\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\Projector.h(30,26): error C2065: 'variant': undeclared identifier
-C:\Users\Therkelsen\Documents\Github\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\Projector.h(30,27): error C2059: syntax error: 'const'
-C:\Users\Therkelsen\Documents\Github\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\Projector.h(30,58): error C2059: syntax error: '>'
-C:\Users\Therkelsen\Documents\Github\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\Projector.h(30,81): error C2238: unexpected token(s) preceding ';'
-  Generating Code...
+C:\Users\Simons Lenovo\Documents\GitHub\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\Projector.cpp(1): warning C4634: XML document comment: cannot be applied:  Discarding XML document comment for invalid target.
+  ALP LED API Sample Single-Color - VS2019.vcxproj -> C:\Users\Simons Lenovo\Documents\GitHub\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\Debug\ALP LED API Sample Single-Color - VS2019.exe

@@ -9,6 +9,9 @@ long brightness = 100;
 
 int main() {
 	Projector P; std::cout << "Constructor called" << std::endl;
+	P.printParameters(P.getImageDataParams());
+	P.printParameters(P.getSequenceParams());
+	P.printParameters(P.getTimingParams());
 	P.initializeProjector(); std::cout << "initializeProjector called" << std::endl;
 	P.generatePattern(frames, spacing, pictureTime, brightness);
 }

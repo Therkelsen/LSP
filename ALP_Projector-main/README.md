@@ -5,9 +5,9 @@ The project with pre-existing code was handed to us by Madav, who took sample co
 
 ## Goals
 ### Refactor
-- [ ] Move everything to a Projector class
-- [ ] Generalize the methods to allow for intercompatibility
-- [ ] Make hardcoded variables into member variables with get/set methods
+- [x] Move everything to a Projector class
+- [x] Generalize the methods to allow for intercompatibility
+- [x] Make hardcoded variables into member variables with get/set methods
 - [ ] Add good comments / fix the ones that arent
 - [ ] Finding an alternative to memset, for programming patterns
 

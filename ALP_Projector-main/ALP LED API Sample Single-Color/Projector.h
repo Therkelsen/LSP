@@ -9,6 +9,7 @@
 #include <crtdbg.h>
 #include <vector>
 #include <variant>
+#include <iostream>
 
 
 // Error handling policy: Quit, whenever an ALP error happens.
@@ -20,18 +21,40 @@
 
 class Projector {
 public:
-	Projector() = default;
+	Projector() {
+		AlpDevId = 0, AlpSeqId = 0, AlpLedId = 0;
+
+		_width = 0, _height = 0;
+
+		_frames = 1, _spacing = 0, _brightness = 100;
+
+		_bitPlanes = 1, _pictureOffset = 0;
+
+		_illuminateTime = 0, _pictureTime = 0, _synchDelay = 0, 
+		_synchPulseWidth = 0, _triggerInDelay = 0;
+
+		_LEDType = ALP_HLD_PT120_BLUE;
+		_LEDContCurrent = 0;
+		_LEDCurrent = 0, _LEDJunctionTemp = 0, deviceNum = 0, initFlag = 0;
+		_sleepTime = 1000;
+	};
+
 	virtual ~Projector();
 
 	int initializeProjector();
 
 	int generatePattern(const long frames = 1, const long spacing = 4, const unsigned long pictureTime = 200000, const long brightness = 100);
 
-	//std::vector<std::variant<long, long, unsigned long, long>> getImageDataParams();
+	std::vector<unsigned long> getImageDataParams() const;
+	std::vector<unsigned long> getSequenceParams() const;
+	std::vector<unsigned long> getTimingParams() const;
+	void printParameters(std::vector<unsigned long> const params) const;
 
 	void setImageDataParams(const long frames, const long spacing, const unsigned long pictureTime, const long brightness);
 	void setSequenceParams(const long bitPlanes, const long pictureOffset);
 	void setTimingParams(const unsigned long illuminateTime, const unsigned long pictureTime, const unsigned long synchDelay, const unsigned long synchPulseWidth, const unsigned long triggerInDelay);
+
+	bool checkLEDExceedsLimits();
 
 private:
 
@@ -68,20 +91,13 @@ private:
 
 	ALP_ID AlpDevId, AlpSeqId, AlpLedId;
 
-	long _width, _height;
-
-	long _frames, _spacing, _brightness;
-	unsigned long _pictureTime;
-
-	long _bitPlanes, _pictureOffset;
+	long _width, _height, _frames, _spacing, _brightness, _bitPlanes, _pictureOffset,
+		 _LEDContCurrent, _LEDCurrent, _LEDJunctionTemp, deviceNum, initFlag, _LEDType;
 	
-	unsigned long _illuminateTime, _pictureTime, _synchDelay, _synchPulseWidth, _triggerInDelay;
+	unsigned long _illuminateTime, _pictureTime, _synchDelay,
+				  _synchPulseWidth, _triggerInDelay, _sleepTime;
 
-	long const _ledType = ALP_HLD_PT120_BLUE;
-	long _LEDContCurrent = 0;
 	tAlpHldPt120AllocParams _LEDParams;
 	tAlpDynSynchOutGate _AlpSynchGate;
-	long _LEDCurrent = 0, _LEDJunctionTemp = 0, deviceNum = 0, initFlag = 0;
-	unsigned long _sleepTime = 1000;
 };
 
