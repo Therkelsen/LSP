@@ -1,8 +1,4 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(517,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (ALP LED API Sample Single-Color.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  AlpFrames.cpp
-C:\Users\Simons Lenovo\Documents\GitHub\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\AlpFrames.cpp(7,92): warning C4100: 'space': unreferenced formal parameter
-C:\Users\Simons Lenovo\Documents\GitHub\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\AlpFrames.cpp(42,50): warning C4100: 'nFrameNumber': unreferenced formal parameter
-C:\Users\Simons Lenovo\Documents\GitHub\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\AlpFrames.cpp(54,81): warning C4100: 'nTop': unreferenced formal parameter
-C:\Users\Simons Lenovo\Documents\GitHub\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\AlpFrames.cpp(54,63): warning C4100: 'nLeft': unreferenced formal parameter
-C:\Users\Simons Lenovo\Documents\GitHub\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\AlpFrames.cpp(54,38): warning C4100: 'nFrameNumber': unreferenced formal parameter
-  ALP LED API Sample Single-Color - VS2019.vcxproj -> C:\Users\Simons Lenovo\Documents\GitHub\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\Debug\ALP LED API Sample Single-Color - VS2019.exe
+  Projector.cpp
+C:\Users\Therkelsen\Documents\Github\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\Projector.cpp(1): warning C4634: XML document comment: cannot be applied:  Discarding XML document comment for invalid target.
+  ALP LED API Sample Single-Color - VS2019.vcxproj -> C:\Users\Therkelsen\Documents\Github\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\Debug\ALP LED API Sample Single-Color - VS2019.exe

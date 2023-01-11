@@ -18,12 +18,10 @@
 * - display: Start the continuous display and monitor LED current and temperature.
 */
 
-
-
 #include "Projector.h"
 
 Projector::~Projector() {
-	try{
+	try {
 		AlpDevHalt(AlpDevId);
 		AlpDevFree(AlpDevId);
 	} catch (...) {
@@ -37,12 +35,12 @@ Projector::~Projector() {
 *
 * This method initializes the ALP device and inquires the projector's dimensions by
 * using the AlpDevAlloc and AlpDevInquire functions.
-* 
+*
 * @note AlpDevInquire: inquires the device of certain parameters i.e. height or width.
 *
 * @return  int, representing the status of the initialization, returns 0 if initialization was successful, otherwise returns an error code.
 */
-int Projector::initializeProjector(){
+int Projector::initializeProjector() {
 	VERIFY_ALP_NO_ECHO(AlpDevAlloc(deviceNum, initFlag, &AlpDevId));
 	VERIFY_ALP_NO_ECHO(AlpDevInquire(AlpDevId, ALP_DEV_DISPLAY_WIDTH, &_width));
 	VERIFY_ALP_NO_ECHO(AlpDevInquire(AlpDevId, ALP_DEV_DISPLAY_HEIGHT, &_height));
@@ -64,7 +62,7 @@ int Projector::initializeProjector(){
 * loads the data into the ALP memory and sets the timing properties of the sequence using the
 * AlpSeqAlloc, AlpSeqPut and AlpSeqTiming functions of the ALP-4 API.
 * It also call other function to drive LED,  set gatedSynch and start display
-* 
+*
 * @note AlpSeqAlloc: allocates a sequence.
 * @note AlpSeqPut: loads the data into the ALP memory
 * @note AlpSeqTiming: sets the timing properties of the sequence
@@ -77,7 +75,7 @@ int Projector::initializeProjector(){
 
 int Projector::generatePattern(const long frames, const long spacing, const unsigned long pictureTime, const long brightness) {
 	initializeProjector();
-	
+
 	setImageDataParams(frames, spacing, pictureTime, brightness);
 
 	CAlpFramesMovingSquare ImageData(_frames, _width, _height, _spacing);
@@ -132,7 +130,7 @@ void Projector::setSequenceParams(const long bitPlanes, const long pictureOffset
 	_bitPlanes = bitPlanes; _pictureOffset = pictureOffset;
 }
 
-void Projector::setTimingParams(const unsigned long illuminateTime, const unsigned long pictureTime, const unsigned long synchDelay, const unsigned long synchPulseWidth, const unsigned long triggerInDelay){
+void Projector::setTimingParams(const unsigned long illuminateTime, const unsigned long pictureTime, const unsigned long synchDelay, const unsigned long synchPulseWidth, const unsigned long triggerInDelay) {
 	_illuminateTime = illuminateTime; _pictureOffset = pictureTime; _synchDelay = synchDelay;
 	_synchPulseWidth = synchPulseWidth; _triggerInDelay = triggerInDelay;
 }
@@ -147,21 +145,21 @@ void Projector::setTimingParams(const unsigned long illuminateTime, const unsign
 * @note The LED type cannot be detected automatically. It is important that the user enters the correct type.
 * This affects parameters like maximum allowed continuous forward current,
 * but also calculation of junction temperature depends on the correct LED type.
-* 
+*
 * @note Using AlpLedInquire function this function reports the allowed continuous forward current of the LED type
 * and the configuration of this HLD. These parameters could be used for AlpLedAlloc.
-* 
+*
 * @note AlpLedAlloc initializes and allocates a LED driver of the given type. It is addressed by its
-* identifier LedId in subsequent ALP LED API calls. 
-* 
+* identifier LedId in subsequent ALP LED API calls.
+*
 * @note Using AlpLedInquireEx function, this function will report the I2C bus addresses of the DAC and ADC of the LED driver.
-* 
+*
 * @note Using AlpLedControl function, this function will set the brightness of the LED to the desired percentage and switch the LED on.
 *
 * @note Single-Color configurations usually have bus addresses 24, 64.
-* 
+*
 * @note AlpDevControlEx: Set up synchronization pins to conditionally output frame synch pulses.
-* 
+*
 * @return int 0 on success, 1 on failure
 */
 int Projector::initializeLED(const long brightness) {
@@ -169,10 +167,10 @@ int Projector::initializeLED(const long brightness) {
 	VERIFY_ALP_NO_ECHO(AlpLedAlloc(AlpDevId, _LEDType, NULL, &AlpLedId));
 
 	VERIFY_ALP_NO_ECHO(AlpLedInquire(AlpDevId, AlpLedId, ALP_LED_SET_CURRENT, &_LEDContCurrent));
-	_tprintf( _T("This LED can be driven with continuous current of %0.1f A\r\n"), (double)_LEDContCurrent/1000. );
-	
+	_tprintf(_T("This LED can be driven with continuous current of %0.1f A\r\n"), (double)_LEDContCurrent / 1000.);
+
 	VERIFY_ALP_NO_ECHO(AlpLedInquireEx(AlpDevId, AlpLedId, ALP_LED_ALLOC_PARAMS, &_LEDParams));
-	_tprintf( _T("The LED driver has I2C bus addresses DAC=%i, ADC=%i\r\n"), _LEDParams.I2cDacAddr, _LEDParams.I2cAdcAddr);
+	_tprintf(_T("The LED driver has I2C bus addresses DAC=%i, ADC=%i\r\n"), _LEDParams.I2cDacAddr, _LEDParams.I2cAdcAddr);
 
 	VERIFY_ALP_NO_ECHO(AlpLedControl(AlpDevId, AlpLedId, ALP_LED_BRIGHTNESS, _brightness));
 
@@ -184,27 +182,27 @@ int Projector::initializeLED(const long brightness) {
 /**
 * @brief Continuous projection of a pre-defined sequence of images, with monitoring of LED current and temperature
 *
-* This method starts the continuous projection of the images that have been previously loaded into the ALP memory using the 
+* This method starts the continuous projection of the images that have been previously loaded into the ALP memory using the
 * `AlpSeqPut` function and sets the timing properties of the sequence using `AlpSeqTiming`. It also monitors the LED current
-* and temperature using the `AlpLedInquire` function and  runs until a key has been hit or until the temperature 
+* and temperature using the `AlpLedInquire` function and  runs until a key has been hit or until the temperature
 * exceeds a certain limit (by default 100*256). In case of this happening, the LED is switched off and the program stops.
 *
 * @note The LED current is measured in milliamperes (mA) and the temperature is measured in 1°C/256.
-* 
-* @note AlpProjStartCont (ALP_ID DeviceId, ALP_ID SequenceId): This function displays the specified sequence in an infinite loop.  
+*
+* @note AlpProjStartCont (ALP_ID DeviceId, ALP_ID SequenceId): This function displays the specified sequence in an infinite loop.
 * The sequence display can be stopped using AlpProjHalt or AlpDevHalt.
-* 
+*
 * @note _kbhit(): keyboard hit. Has value 0 until a key is pressed, after which it gains the value 1.
-* 
+*
 * @note AlpDevInquire: inquires the device of certain parameters i.e. current or temperature.
-* 
-* @note If the temperature sensor is disconnected from the HLD, then very low temperatures (below -200°C or so) are reported. 
+*
+* @note If the temperature sensor is disconnected from the HLD, then very low temperatures (below -200°C or so) are reported.
 * Projector switches off at 100°C (generally, LEDs can stand much higher temperatures, but this differs between LED types).
-* 
-* @note pause: pauses the execution until a key is pressed. 
-* 
+*
+* @note pause: pauses the execution until a key is pressed.
+*
 * @note When terminating the ALP system, use AlpDevFree before disconnecting it from the USB to
-* avoid problems after USB re-connection. 
+* avoid problems after USB re-connection.
 */
 int Projector::display() {
 	VERIFY_ALP_NO_ECHO(AlpProjStartCont(AlpDevId, AlpSeqId));
@@ -226,4 +224,3 @@ int Projector::display() {
 	Pause();
 	return 0;
 }
-
