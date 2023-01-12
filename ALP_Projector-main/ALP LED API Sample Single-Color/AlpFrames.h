@@ -9,8 +9,7 @@
 // - specialization of CAlpFrames (just to remove its code from the main function)
 // - initializes image data with a bright square moving diagonally over the DMD
 
-class CAlpFrames
-{
+class CAlpFrames {
 	CAlpFrames const& operator=(CAlpFrames const& rhs); // hidden, not required
 public:
 	CAlpFrames(const long nFrameCount, const long nWidth, const long nHeight);
@@ -36,8 +35,9 @@ private:
 	char unsigned* const m_pImageData;
 };
 
-class CAlpFramesMovingSquare : public CAlpFrames
-{
+class CAlpDraw : public CAlpFrames {
 public:
-	CAlpFramesMovingSquare(const long nFrameCount, const long nWidth, const long nHeight);
+	CAlpDraw(const long nFrameCount, const long nWidth, const long nHeight);
+private:
+	void drawMovingSquare(long nFrameCount, long nWidth, long nHeight);
 };

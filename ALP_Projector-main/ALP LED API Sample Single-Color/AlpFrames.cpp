@@ -1,12 +1,17 @@
 #include "AlpFrames.h"
 #include <crtdbg.h>
-#include <memory.h>
+#include <memory>
 #include <stdio.h>
 #include <typeinfo>
 #include "Windows.h"
+
 CAlpFrames::CAlpFrames(const long nFrameCount, const long nWidth, const long nHeight)
+	// shared pointer:
 	: m_nFrameCount(nFrameCount), m_nWidth(nWidth), m_nHeight(nHeight),
+	// uses `new` to allocate `nFrameCount * nWidth * nHeight` bytes of storage
+	// hence, m_pImageData is a non-null pointer to the first byte of the block
 	m_pImageData(new char unsigned[nFrameCount * nWidth * nHeight]) {
+	// Weird macro definitions
 	_ASSERT(nFrameCount > 0 && nWidth > 0 && nHeight > 0);
 	_ASSERT(m_pImageData != NULL);
 	// Initialize image data as solid black
@@ -14,26 +19,15 @@ CAlpFrames::CAlpFrames(const long nFrameCount, const long nWidth, const long nHe
 }
 
 CAlpFrames::~CAlpFrames(void) {
-	//printf("\nIn AlpFrames -> Deconstructor");
+	//Deconstructor, for now just resets image to all black to avoid heap errors
 	memset(m_pImageData, 0, m_nWidth * m_nHeight);
 	//ZeroMemory(m_pImageData, m_nWidth * m_nHeight);
 	//free(m_pImageData);
 	//delete[] m_pImageData;
 }
 
-CAlpFramesMovingSquare::CAlpFramesMovingSquare(const long nFrameCount, const long nWidth, const long nHeight) :
-	CAlpFrames(nFrameCount, nWidth, nHeight)
-{
-	// Move a bright square from top-left to bottom-right corner of the DMD.
-	// (this also visualizes flipped output of projection optics )
-	const long nSquareWidth = nHeight / 2,
-		nTravelExtentX = nWidth - nSquareWidth,
-		nTravelExtentY = nHeight - nSquareWidth;
-	for (long nFrame = 0; nFrame < nFrameCount; nFrame++)
-		FillRect(nFrame,
-			nFrame * nTravelExtentX / (nFrameCount - 1), nFrame * nTravelExtentY / (nFrameCount - 1),
-			nSquareWidth, nSquareWidth,
-			255);	// bright
+CAlpDraw::CAlpDraw(const long nFrameCount, const long nWidth, const long nHeight) : CAlpFrames(nFrameCount, nWidth, nHeight) {
+	drawMovingSquare(nFrameCount, nWidth, nHeight);
 }
 
 char unsigned* CAlpFrames::operator()(const long nFrameNumber) {
@@ -46,10 +40,7 @@ char unsigned& CAlpFrames::at(const long nFrameNumber, const long nX, const long
 		&& nX >= 0 && nX < m_nWidth
 		&& nY >= 0 && nY < m_nHeight);
 
-	return m_pImageData
-		[nFrameNumber * m_nWidth * m_nHeight
-		+ nY * m_nWidth
-		+ nX];
+	return m_pImageData[nFrameNumber * m_nWidth * m_nHeight + nY * m_nWidth + nX];
 }
 
 void CAlpFrames::FillRect(const long nFrameNumber, const long nLeft, const long nTop,
@@ -61,4 +52,15 @@ void CAlpFrames::FillRect(const long nFrameNumber, const long nLeft, const long 
 	// row by row: set the area starting from nLeft to PixelValue
 	for (long nY = nTop; nY <= nBottom; nY++)
 		memset(&at(nFrameNumber, nLeft, nY), PixelValue, nRectWidth);
+}
+
+void CAlpDraw::drawMovingSquare(long nFrameCount, long nWidth, long nHeight) {
+	// Move a bright square from top-left to bottom-right corner of the DMD.
+		// (this also visualizes flipped output of projection optics )
+	const long nSquareWidth = nHeight / 2,
+		nTravelExtentX = nWidth - nSquareWidth,
+		nTravelExtentY = nHeight - nSquareWidth;
+	for (long nFrame = 0; nFrame < nFrameCount; nFrame++)
+		FillRect(nFrame, nFrame * nTravelExtentX / (nFrameCount - 1), nFrame * nTravelExtentY / (nFrameCount - 1),
+			nSquareWidth, nSquareWidth, 255);
 }

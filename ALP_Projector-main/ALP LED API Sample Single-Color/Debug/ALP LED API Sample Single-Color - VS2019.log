@@ -1,3 +1,8 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(517,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (ALP LED API Sample Single-Color.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  ALP LED API Sample Single-Color.cpp
   AlpFrames.cpp
+  Projector.cpp
+  main.cpp
+C:\Users\Therkelsen\Documents\Github\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\Projector.cpp(1): warning C4634: XML document comment: cannot be applied:  Discarding XML document comment for invalid target.
+C:\Users\Therkelsen\Documents\Github\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\ALP LED API Sample Single-Color.cpp(31,7): warning C4189: 'space': local variable is initialized but not referenced
   ALP LED API Sample Single-Color - VS2019.vcxproj -> C:\Users\Therkelsen\Documents\Github\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\Debug\ALP LED API Sample Single-Color - VS2019.exe
