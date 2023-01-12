@@ -41,9 +41,14 @@ Projector::~Projector() {
 * @return  int, representing the status of the initialization, returns 0 if initialization was successful, otherwise returns an error code.
 */
 int Projector::initializeProjector() {
-	VERIFY_ALP_NO_ECHO(AlpDevAlloc(deviceNum, initFlag, &AlpDevId));
-	VERIFY_ALP_NO_ECHO(AlpDevInquire(AlpDevId, ALP_DEV_DISPLAY_WIDTH, &_width));
-	VERIFY_ALP_NO_ECHO(AlpDevInquire(AlpDevId, ALP_DEV_DISPLAY_HEIGHT, &_height));
+	try{
+		VERIFY_ALP_NO_ECHO(AlpDevAlloc(deviceNum, initFlag, &AlpDevId));
+		VERIFY_ALP_NO_ECHO(AlpDevInquire(AlpDevId, ALP_DEV_DISPLAY_WIDTH, &_width));
+		VERIFY_ALP_NO_ECHO(AlpDevInquire(AlpDevId, ALP_DEV_DISPLAY_HEIGHT, &_height));
+	} catch(std::invalid_argument const& e) {
+		std::cerr << "Error: " << e.what() << std::endl;
+		exit(1);
+	}
 	_tprintf(_T("Projector dimensions: %i x %i pixels\r\n"), _width, _height);
 
 	return 0;
@@ -78,17 +83,21 @@ int Projector::generatePattern(const long frames, const long spacing, const unsi
 
 	setImageDataParams(frames, spacing, pictureTime, brightness);
 
-	CAlpFramesMovingSquare ImageData(_frames, _width, _height, _spacing);
+	CAlpFramesMovingSquare ImageData(_frames, _width, _height);
 
 	VERIFY_ALP_NO_ECHO(AlpSeqAlloc(AlpDevId, _bitPlanes, _frames, &AlpSeqId));
 	VERIFY_ALP_NO_ECHO(AlpSeqPut(AlpDevId, AlpSeqId, _pictureOffset, _frames, ImageData(0)));
 	VERIFY_ALP_NO_ECHO(AlpSeqTiming(AlpDevId, AlpSeqId, _illuminateTime, _pictureTime, _synchDelay, _synchPulseWidth, _triggerInDelay));
 
-	initializeLED(brightness);
+	initializeLED();
 
 	display();
 
 	return 0;
+}
+
+long Projector::getBrightness() const {
+	return _brightness;
 }
 
 std::vector<unsigned long> Projector::getImageDataParams() const {
@@ -101,6 +110,23 @@ std::vector<unsigned long> Projector::getSequenceParams() const {
 
 std::vector<unsigned long> Projector::getTimingParams() const {
 	return std::vector<unsigned long> {_illuminateTime, _pictureTime, _synchDelay, _synchPulseWidth, _triggerInDelay};
+}
+
+void Projector::setBrightness(long brightness) {
+	_brightness = brightness;
+}
+
+void Projector::setImageDataParams(const long frames, const long spacing, const unsigned long pictureTime, const long brightness) {
+	_frames = frames; _spacing = spacing; _pictureTime = pictureTime; _brightness = brightness;
+}
+
+void Projector::setSequenceParams(const long bitPlanes, const long pictureOffset) {
+	_bitPlanes = bitPlanes; _pictureOffset = pictureOffset;
+}
+
+void Projector::setTimingParams(const unsigned long illuminateTime, const unsigned long pictureTime, const unsigned long synchDelay, const unsigned long synchPulseWidth, const unsigned long triggerInDelay) {
+	_illuminateTime = illuminateTime; _pictureOffset = pictureTime; _synchDelay = synchDelay;
+	_synchPulseWidth = synchPulseWidth; _triggerInDelay = triggerInDelay;
 }
 
 void Projector::printParameters(std::vector<unsigned long> const params) const {
@@ -120,19 +146,6 @@ bool Projector::checkLEDExceedsLimits() {
 		return true;
 	}
 	return false;
-}
-
-void Projector::setImageDataParams(const long frames, const long spacing, const unsigned long pictureTime, const long brightness) {
-	_frames = frames; _spacing = spacing; _pictureTime = pictureTime; _brightness = brightness;
-}
-
-void Projector::setSequenceParams(const long bitPlanes, const long pictureOffset) {
-	_bitPlanes = bitPlanes; _pictureOffset = pictureOffset;
-}
-
-void Projector::setTimingParams(const unsigned long illuminateTime, const unsigned long pictureTime, const unsigned long synchDelay, const unsigned long synchPulseWidth, const unsigned long triggerInDelay) {
-	_illuminateTime = illuminateTime; _pictureOffset = pictureTime; _synchDelay = synchDelay;
-	_synchPulseWidth = synchPulseWidth; _triggerInDelay = triggerInDelay;
 }
 
 /**
@@ -160,10 +173,14 @@ void Projector::setTimingParams(const unsigned long illuminateTime, const unsign
 *
 * @note AlpDevControlEx: Set up synchronization pins to conditionally output frame synch pulses.
 *
+* @note AlpLedTypePrompt(): Requests the user to choose the right LED.
+*
 * @return int 0 on success, 1 on failure
 */
-int Projector::initializeLED(const long brightness) {
-	setImageDataParams(_frames, _spacing, _pictureTime, brightness);
+int Projector::initializeLED() {
+	_tprintf(_T("\r\nPlease enter the correct type of the connected LED\r\n"));
+	_LEDType = AlpLedTypePrompt();
+
 	VERIFY_ALP_NO_ECHO(AlpLedAlloc(AlpDevId, _LEDType, NULL, &AlpLedId));
 
 	VERIFY_ALP_NO_ECHO(AlpLedInquire(AlpDevId, AlpLedId, ALP_LED_SET_CURRENT, &_LEDContCurrent));
@@ -172,7 +189,15 @@ int Projector::initializeLED(const long brightness) {
 	VERIFY_ALP_NO_ECHO(AlpLedInquireEx(AlpDevId, AlpLedId, ALP_LED_ALLOC_PARAMS, &_LEDParams));
 	_tprintf(_T("The LED driver has I2C bus addresses DAC=%i, ADC=%i\r\n"), _LEDParams.I2cDacAddr, _LEDParams.I2cAdcAddr);
 
-	VERIFY_ALP_NO_ECHO(AlpLedControl(AlpDevId, AlpLedId, ALP_LED_BRIGHTNESS, _brightness));
+	// User enters percentage for LED brightness:
+	// Note: this application limits input values to 100 percent,
+	//	whilst the API allows overdriving the LED
+	_tprintf(_T("\r\nEnter requested brightness. "));
+	setBrightness((AlpPercentPrompt(_T("Percent (0..100): "))));
+	_tprintf(_T("Note: Expected current at %i%% is %0.1f A\r\n"), getBrightness(),
+		(double)getBrightness() / 100 * (double)_LEDContCurrent / 1000);
+
+	VERIFY_ALP_NO_ECHO(AlpLedControl(AlpDevId, AlpLedId, ALP_LED_BRIGHTNESS, getBrightness()));
 
 	VERIFY_ALP_NO_ECHO(AlpDevControlEx(AlpDevId, ALP_DEV_DYN_SYNCH_OUT3_GATE, &_AlpSynchGate));
 

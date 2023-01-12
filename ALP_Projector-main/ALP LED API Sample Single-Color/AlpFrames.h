@@ -11,28 +11,33 @@
 
 class CAlpFrames
 {
+	CAlpFrames const& operator=(CAlpFrames const& rhs); // hidden, not required
 public:
-	CAlpFrames(const long nFrameNumber, const long nWidth, const long nHeight, long space);
+	CAlpFrames(const long nFrameCount, const long nWidth, const long nHeight);
 	~CAlpFrames(void);
 
 	// This conversion operator returns a pointer to the image data of a frame.
 	// nFrameNumber, nX, nY are zero-based indexes.
-	char unsigned *operator()(const long nFrameNumber);
+	char unsigned* operator()(const long nFrameNumber);
 	// access a single pixel
-	char unsigned& at(const long nX, const long nY);
-	
+	char unsigned& at(const long nFrameNumber, const long nX, const long nY);
+
 	// Drawing routine
-	void FillRect(const long nFrameNumber, const long nLeft, const long nTop, const long nWidth, const long nHeight, const char unsigned PixelValue, long space);
+	void FillRect(const long nFrameNumber,
+		const long nLeft, const long nTop,
+		const long nWidth, const long nHeight,
+		const char unsigned PixelValue);
 
 	// These members contain parameters, supplied during construction.
 	const long m_nFrameCount, m_nWidth, m_nHeight;
 
+private:
 	// pointer to the data
-	char unsigned *const m_pImageData;
+	char unsigned* const m_pImageData;
 };
 
 class CAlpFramesMovingSquare : public CAlpFrames
 {
 public:
-	CAlpFramesMovingSquare(const long nFrameCount, const long nWidth, const long nHeight, long space);
+	CAlpFramesMovingSquare(const long nFrameCount, const long nWidth, const long nHeight);
 };

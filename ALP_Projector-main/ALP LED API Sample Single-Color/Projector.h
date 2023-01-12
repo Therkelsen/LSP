@@ -10,6 +10,7 @@
 #include <vector>
 #include <variant>
 #include <iostream>
+#include <stdexcept>
 
 
 // Error handling policy: Quit, whenever an ALP error happens.
@@ -30,7 +31,7 @@ public:
 
 		_bitPlanes = 1, _pictureOffset = 0;
 
-		_illuminateTime = 0, _pictureTime = 0, _synchDelay = 0, 
+		_illuminateTime = 0, _pictureTime = 0, _synchDelay = 0,
 		_synchPulseWidth = 0, _triggerInDelay = 0;
 
 		_LEDType = ALP_HLD_PT120_BLUE;
@@ -40,7 +41,7 @@ public:
 
 		// _ASSERT creates a macro
 		_ASSERT(sizeof(_AlpSynchGate) == 18);
-		// memset: Sets the first `num` bytes of the block of memory pointed by `ptr` to the specified value 
+		// memset: Sets the first `num` bytes of the block of memory pointed by `ptr` to the specified value
 		// (interpreted as an `unsigned char`). memset is used, as `_AlpSynchGate` already has memory allocated.
 		memset(&_AlpSynchGate, 0, sizeof(_AlpSynchGate));
 
@@ -51,11 +52,13 @@ public:
 
 	int generatePattern(const long frames = 1, const long spacing = 4, const unsigned long pictureTime = 200000, const long brightness = 100);
 
+	long getBrightness() const;
 	std::vector<unsigned long> getImageDataParams() const;
 	std::vector<unsigned long> getSequenceParams() const;
 	std::vector<unsigned long> getTimingParams() const;
 	void printParameters(std::vector<unsigned long> const params) const;
 
+	void setBrightness(long brightness);
 	void setImageDataParams(const long frames, const long spacing, const unsigned long pictureTime, const long brightness);
 	void setSequenceParams(const long bitPlanes, const long pictureOffset);
 	void setTimingParams(const unsigned long illuminateTime, const unsigned long pictureTime, const unsigned long synchDelay, const unsigned long synchPulseWidth, const unsigned long triggerInDelay);
@@ -65,25 +68,25 @@ public:
 private:
 	int initializeProjector();
 
-	int initializeLED(long brightness = 100);
+	int initializeLED();
 
 	int display();
-	
+
 	/**
 	* @var AlpDevId, AlpSeqId, AlpLedId
 	* @brief ID's needed for the projector (Device, Sequence, ID)
-	* 
+	*
 	* @var _width, _height
 	* @brief Dimensions (width, height), and width of virtual pixel.
 	*
 	* @var _frames, _spacing, _pictureTime, _brightness
 	* @brief Amount of frames to display, width of virtual pixels, time between two consecutive pictures [μs], LED brightness [%]
-	* 
+	*
 	* @var _bitPlanes, _pictureOffset
 	* @brief Bit depth of images, and indexing of pictures, i.e. which index to start at.
 	*
 	* @var _illuminateTime, _pictureTime, _synchDelay, _synchPulseWidth, _triggerInDelay
-	* Duration of the display of one picture in the sequence [μs], Time between the start of two consecutive pictures [μs], Specifies the time 
+	* Duration of the display of one picture in the sequence [μs], Time between the start of two consecutive pictures [μs], Specifies the time
 	* between start of the frame synch output pulse and the start of the display (master mode) [μs], Specifies the duration of the frame synch
 	* output pulse [μs], Specifies the time between the incoming trigger edge and the start of the display (slave mode) [μs].
 	*
@@ -98,7 +101,7 @@ private:
 
 	long _width, _height, _frames, _spacing, _brightness, _bitPlanes, _pictureOffset,
 		 _LEDContCurrent, _LEDCurrent, _LEDJunctionTemp, deviceNum, initFlag, _LEDType;
-	
+
 	unsigned long _illuminateTime, _pictureTime, _synchDelay,
 				  _synchPulseWidth, _triggerInDelay, _sleepTime;
 

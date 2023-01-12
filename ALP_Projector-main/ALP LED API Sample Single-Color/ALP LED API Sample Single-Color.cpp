@@ -29,7 +29,7 @@ int generate_pattern(const long Frames = 1, const long spacing = 4, const long b
 	// Initialize image data (completely done in during construction of the ImageData variable)
 	const long nFrames = Frames;
 	long space = spacing;
-	CAlpFramesMovingSquare ImageData(nFrames, nDmdWidth, nDmdHeight, space);
+	CAlpFramesMovingSquare ImageData(nFrames, nDmdWidth, nDmdHeight);
 
 	// Allocate a sequence and load data
 	VERIFY_ALP_NO_ECHO( AlpSeqAlloc( AlpDevId, 1, nFrames, &AlpSeqId ) );
@@ -37,7 +37,7 @@ int generate_pattern(const long Frames = 1, const long spacing = 4, const long b
 	// 200ms, i.e. 5Hz - Input "1000" for 1[s]
 	VERIFY_ALP_NO_ECHO( AlpSeqTiming( AlpDevId, AlpSeqId, 0, 200000, 0, 0, 0 ) );
 
- /* LED Stuff 
+ /* LED Stuff
 	 Initialize a LED.
 	 Note: The LED type cannot be detected automatically.
 	 It is important that the user enters the correct type.
@@ -92,7 +92,7 @@ int generate_pattern(const long Frames = 1, const long spacing = 4, const long b
 	while (0 == _kbhit()) {
 		long nLedCurrent_mA(0), nLedJunctionTemp(0);
 		Sleep( 1000 );	// wait 1 second
-		
+
 		// Inquire measurements:
 		VERIFY_ALP_NO_ECHO( AlpLedInquire( AlpDevId, AlpLedId, ALP_LED_MEASURED_CURRENT, &nLedCurrent_mA ) );
 		VERIFY_ALP_NO_ECHO( AlpLedInquire( AlpDevId, AlpLedId, ALP_LED_TEMPERATURE_JUNCTION, &nLedJunctionTemp ) );

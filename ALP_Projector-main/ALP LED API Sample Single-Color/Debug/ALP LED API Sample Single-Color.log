@@ -1,8 +1,13 @@
-﻿  AlpFrames.cpp
-C:\Users\Madav Sridhar\OneDrive - Syddansk Universitet\LSP\FlexDraper-VisionSystem\Code\TestPrograms\ALP_Projector\ALP LED API Sample Single-Color\AlpFrames.cpp(47,9): warning C4129: 'm': unrecognized character escape sequence
-C:\Users\Madav Sridhar\OneDrive - Syddansk Universitet\LSP\FlexDraper-VisionSystem\Code\TestPrograms\ALP_Projector\ALP LED API Sample Single-Color\AlpFrames.cpp(44,50): warning C4100: 'nFrameNumber': unreferenced formal parameter
-C:\Users\Madav Sridhar\OneDrive - Syddansk Universitet\LSP\FlexDraper-VisionSystem\Code\TestPrograms\ALP_Projector\ALP LED API Sample Single-Color\AlpFrames.cpp(52,42): warning C4100: 'nX': unreferenced formal parameter
-C:\Users\Madav Sridhar\OneDrive - Syddansk Universitet\LSP\FlexDraper-VisionSystem\Code\TestPrograms\ALP_Projector\ALP LED API Sample Single-Color\AlpFrames.cpp(58,81): warning C4100: 'nTop': unreferenced formal parameter
-C:\Users\Madav Sridhar\OneDrive - Syddansk Universitet\LSP\FlexDraper-VisionSystem\Code\TestPrograms\ALP_Projector\ALP LED API Sample Single-Color\AlpFrames.cpp(58,63): warning C4100: 'nLeft': unreferenced formal parameter
-C:\Users\Madav Sridhar\OneDrive - Syddansk Universitet\LSP\FlexDraper-VisionSystem\Code\TestPrograms\ALP_Projector\ALP LED API Sample Single-Color\AlpFrames.cpp(58,38): warning C4100: 'nFrameNumber': unreferenced formal parameter
-  ALP LED API Sample Single-Color.vcxproj -> C:\Users\Madav Sridhar\OneDrive - Syddansk Universitet\LSP\FlexDraper-VisionSystem\Code\TestPrograms\ALP_Projector\ALP LED API Sample Single-Color\Debug\ALP LED API Sample Single-Color.exe
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(517,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (ALP LED API Sample Single-Color - VS2019.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  ALP LED API Sample Single-Color.cpp
+  AlpUserInterface.cpp
+  AlpFrames.cpp
+C:\Users\Therkelsen\Documents\Github\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\AlpFrames.cpp(7,92): warning C4100: 'space': unreferenced formal parameter
+C:\Users\Therkelsen\Documents\Github\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\AlpFrames.cpp(42,50): warning C4100: 'nFrameNumber': unreferenced formal parameter
+C:\Users\Therkelsen\Documents\Github\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\AlpFrames.cpp(54,81): warning C4100: 'nTop': unreferenced formal parameter
+C:\Users\Therkelsen\Documents\Github\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\AlpFrames.cpp(54,63): warning C4100: 'nLeft': unreferenced formal parameter
+C:\Users\Therkelsen\Documents\Github\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\AlpFrames.cpp(54,38): warning C4100: 'nFrameNumber': unreferenced formal parameter
+  stdafx.cpp
+  Generating Code...
+MSVCRTD.lib(exe_main.obj) : error LNK2019: unresolved external symbol _main referenced in function "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ)
+C:\Users\Therkelsen\Documents\Github\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\Debug\ALP LED API Sample Single-Color.exe : fatal error LNK1120: 1 unresolved externals

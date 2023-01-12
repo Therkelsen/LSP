@@ -2,6 +2,7 @@
 #include "AlpUserInterface.h"
 #include "alp.h"
 #include <conio.h>
+#include <stdexcept>
 
 void Pause() {
 	_tprintf( _T("Press any key") );
@@ -49,6 +50,9 @@ bool AlpError(long const nAlpResult, LPCTSTR sAlpCommand, bool bEchoSuccess )
 			_tprintf( _T("Ok: %s\r\n"), sAlpCommand );
 		return false;	// No error.
 	} else {
+		if (nAlpResult == ALP_NOT_ONLINE) {
+			throw std::invalid_argument("Allocation failed. Projector not online.\nHint: Is the projector plugged in, and turned on?");
+		}
 		_tprintf( _T("ERROR: %s returns %s\r\n"), sAlpCommand, AlpErrorString(strMessageBuf, nAlpResult) );
 		return true;	// Error
 	}
