@@ -63,7 +63,7 @@ public:
 	void setSequenceParams(const long bitPlanes, const long pictureOffset);
 	void setTimingParams(const unsigned long illuminateTime, const unsigned long pictureTime, const unsigned long synchDelay, const unsigned long synchPulseWidth, const unsigned long triggerInDelay);
 
-	bool checkLEDExceedsLimits();
+	bool checkLEDExceedsLimits() const;
 
 private:
 	int initializeProjector();

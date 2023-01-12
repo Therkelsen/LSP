@@ -83,10 +83,16 @@ int Projector::generatePattern(const long frames, const long spacing, const unsi
 
 	setImageDataParams(frames, spacing, pictureTime, brightness);
 
-	CAlpFramesMovingSquare ImageData(_frames, _width, _height);
+	AlpFrames Image(_frames, _width, _height);
+	//Image.drawSquare(_frames, _width, _height, 720);
+	//Image.drawMovingSquare(_frames, _width, _height);
+	//Image.drawVertialLines(_frames, 0, 10, _width, _height, 2);
+	//Image.drawHorizontalLines(_frames, 0, 10, _width, _height, 2);
+	Image.drawGrid(_frames, 0, 0, 10, 10, _width, _height, 2);
+	//Image.drawTartanSquares(_frames, 0, 0, 10, 10, _width, _height, 2);
 
 	VERIFY_ALP_NO_ECHO(AlpSeqAlloc(AlpDevId, _bitPlanes, _frames, &AlpSeqId));
-	VERIFY_ALP_NO_ECHO(AlpSeqPut(AlpDevId, AlpSeqId, _pictureOffset, _frames, ImageData(0)));
+	VERIFY_ALP_NO_ECHO(AlpSeqPut(AlpDevId, AlpSeqId, _pictureOffset, _frames, Image(0)));
 	VERIFY_ALP_NO_ECHO(AlpSeqTiming(AlpDevId, AlpSeqId, _illuminateTime, _pictureTime, _synchDelay, _synchPulseWidth, _triggerInDelay));
 
 	initializeLED();
@@ -136,7 +142,7 @@ void Projector::printParameters(std::vector<unsigned long> const params) const {
 	_tprintf(_T("\r\n"));
 }
 
-bool Projector::checkLEDExceedsLimits() {
+bool Projector::checkLEDExceedsLimits() const {
 	if (_LEDJunctionTemp < 0) {
 		_tprintf(_T("\nWarning: It seems like the thermistor cable is not properly connected.\r"));
 		return true;

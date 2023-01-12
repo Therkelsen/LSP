@@ -96,7 +96,7 @@ long AlpLedTypePrompt() {
 		Index = cKey-_T('a');
 		// ... but only return valid indexes
 		if (Index>=0 && Index<_countof(gAlpLedTypes)) {
-			_tprintf( _T("%s\r\n"), AlpLedTypeName(gAlpLedTypes[Index]) );
+			_tprintf( _T("\r\n%s\r\n"), AlpLedTypeName(gAlpLedTypes[Index]) );
 			return gAlpLedTypes[Index];
 		} else
 			_tprintf( _T("%c\b\a"), cKey );

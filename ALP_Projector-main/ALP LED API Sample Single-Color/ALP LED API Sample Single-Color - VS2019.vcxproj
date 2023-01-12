@@ -52,7 +52,7 @@
       <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../inc</AdditionalIncludeDirectories>
-      <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>

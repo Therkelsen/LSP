@@ -29,11 +29,11 @@ int generate_pattern(const long Frames = 1, const long spacing = 4, const long b
 	// Initialize image data (completely done in during construction of the ImageData variable)
 	const long nFrames = Frames;
 	long space = spacing;
-	CAlpFramesMovingSquare ImageData(nFrames, nDmdWidth, nDmdHeight);
+	//CAlpFramesMovingSquare ImageData(nFrames, nDmdWidth, nDmdHeight);
 
 	// Allocate a sequence and load data
 	VERIFY_ALP_NO_ECHO( AlpSeqAlloc( AlpDevId, 1, nFrames, &AlpSeqId ) );
-	VERIFY_ALP_NO_ECHO( AlpSeqPut( AlpDevId, AlpSeqId, 0, nFrames, ImageData(0) ) );
+	//VERIFY_ALP_NO_ECHO( AlpSeqPut( AlpDevId, AlpSeqId, 0, nFrames, ImageData(0) ) );
 	// 200ms, i.e. 5Hz - Input "1000" for 1[s]
 	VERIFY_ALP_NO_ECHO( AlpSeqTiming( AlpDevId, AlpSeqId, 0, 200000, 0, 0, 0 ) );
 
