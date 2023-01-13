@@ -30,6 +30,9 @@
     <ClInclude Include="AlpUserInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Projector.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -42,6 +45,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AlpUserInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Projector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

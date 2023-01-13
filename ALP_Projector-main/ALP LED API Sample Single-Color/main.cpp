@@ -8,10 +8,6 @@ const unsigned long pictureTime = 10000;
 const long brightness = 100;
 
 int main() {
-	Projector P; std::cout << "Constructor called" << std::endl;
-	P.printParameters(P.getImageDataParams());
-	P.printParameters(P.getSequenceParams());
-	P.printParameters(P.getTimingParams());
-
+	Projector P;
 	P.generatePattern(frames, spacing, pictureTime, brightness);
 }
