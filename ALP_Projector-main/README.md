@@ -30,6 +30,7 @@ You have a few options to get the repo
    `$ git clone https://github.com/Therkelsen/LSP`
 ### Program structure
 To edit/run the project, navigate to `*/LSP/ALP_Projector-main/ALP LED API Sample Single-Color/`,
+
 then open `ALP LED API Sample Single-Color.sln` in Visual Studio.
 
 The main file creates an instance of the Projector object, and calls Projector::generatePattern. If you want to change what is drawn, for now, you'll have to call a different draw function in Projector::generatePattern. 
