@@ -28,7 +28,7 @@ public:
 		_bitPlanes = 1, _pictureOffset = 0;
 
 		_illuminateTime = 0, _pictureTime = 0, _synchDelay = 0,
-		_synchPulseWidth = 0, _triggerInDelay = 0;
+			_synchPulseWidth = 0, _triggerInDelay = 0;
 
 		_LEDType = ALP_HLD_PT120_BLUE;
 		_LEDContCurrent = 0;
@@ -38,7 +38,8 @@ public:
 		try {
 			if (sizeof(_AlpSynchGate) != 18)
 				throw std::invalid_argument("Size of `_AlpSynchGate` invalid. Should be 18 bytes.");
-		} catch (std::invalid_argument& e) {
+		}
+		catch (std::invalid_argument& e) {
 			std::cerr << e.what() << std::endl;
 			Pause();
 			exit(1);
@@ -58,7 +59,7 @@ public:
 	std::vector<unsigned long> getImageDataParams() const;
 	std::vector<unsigned long> getSequenceParams() const;
 	std::vector<unsigned long> getTimingParams() const;
-	void printParameters(std::vector<unsigned long> const params) const;
+	void printParameters(std::vector<unsigned long> const& params) const;
 
 	void setBrightness(long brightness);
 	void setImageDataParams(const long frames, const long spacing, const unsigned long pictureTime, const long brightness);
@@ -102,10 +103,10 @@ private:
 	ALP_ID AlpDevId, AlpSeqId, AlpLedId;
 
 	long _width, _height, _frames, _spacing, _brightness, _bitPlanes, _pictureOffset,
-		 _LEDContCurrent, _LEDCurrent, _LEDJunctionTemp, deviceNum, initFlag, _LEDType;
+		_LEDContCurrent, _LEDCurrent, _LEDJunctionTemp, deviceNum, initFlag, _LEDType;
 
 	unsigned long _illuminateTime, _pictureTime, _synchDelay,
-				  _synchPulseWidth, _triggerInDelay, _sleepTime;
+		_synchPulseWidth, _triggerInDelay, _sleepTime;
 
 	tAlpHldPt120AllocParams _LEDParams;
 	tAlpDynSynchOutGate _AlpSynchGate;

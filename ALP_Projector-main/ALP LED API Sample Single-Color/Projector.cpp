@@ -24,7 +24,8 @@ Projector::~Projector() {
 	try {
 		AlpDevHalt(AlpDevId);
 		AlpDevFree(AlpDevId);
-	} catch (...) {
+	}
+	catch (...) {
 		_tprintf(_T("\r\nWarning: An error occured when deallocating memory!\r\n"));
 	}
 	_tprintf(_T("\r\nProjector deconstructor called, memory deallocated.\r\n"));
@@ -41,11 +42,12 @@ Projector::~Projector() {
 * @return  int, representing the status of the initialization, returns 0 if initialization was successful, otherwise returns an error code.
 */
 int Projector::initializeProjector() {
-	try{
+	try {
 		VERIFY_ALP_NO_ECHO(AlpDevAlloc(deviceNum, initFlag, &AlpDevId));
 		VERIFY_ALP_NO_ECHO(AlpDevInquire(AlpDevId, ALP_DEV_DISPLAY_WIDTH, &_width));
 		VERIFY_ALP_NO_ECHO(AlpDevInquire(AlpDevId, ALP_DEV_DISPLAY_HEIGHT, &_height));
-	} catch(std::invalid_argument const& e) {
+	}
+	catch (std::invalid_argument const& e) {
 		std::cerr << "Error: " << e.what() << std::endl;
 		exit(1);
 	}
@@ -138,7 +140,7 @@ void Projector::setTimingParams(const unsigned long illuminateTime, const unsign
 	_synchPulseWidth = synchPulseWidth; _triggerInDelay = triggerInDelay;
 }
 
-void Projector::printParameters(std::vector<unsigned long> const params) const {
+void Projector::printParameters(std::vector<unsigned long> const& params) const {
 	for (auto i : params) {
 		_tprintf(_T("%i "), i);
 	}

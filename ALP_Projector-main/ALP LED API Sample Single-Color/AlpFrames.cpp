@@ -44,13 +44,32 @@ AlpFrames::AlpFrames(const long frames, const long width, const long height)
 			throw std::invalid_argument("Error: Projector dimensions must be positive integers.");
 		if (_imageData == nullptr)
 			throw std::invalid_argument("Error: ImageData pointer can't be null.");
-	} catch (std::invalid_argument& e) {
+	}
+	catch (std::invalid_argument& e) {
 		std::cerr << e.what() << std::endl;
 		Pause();
 		exit(1);
 	}
 
 	memset(_imageData, 0, frames * width * height);
+}
+
+AlpFrames::AlpFrames(const AlpFrames& a)
+	: _frameCount(a._frameCount), _width(a._width), _height(a._height),
+	_imageData(new char unsigned[a._frameCount * a._width * a._height]) {
+	try {
+		if (_width <= 0 || _height <= 0)
+			throw std::invalid_argument("Error: Projector dimensions must be positive integers.");
+		if (_imageData == nullptr)
+			throw std::invalid_argument("Error: ImageData pointer can't be null.");
+	}
+	catch (std::invalid_argument& e) {
+		std::cerr << e.what() << std::endl;
+		Pause();
+		exit(1);
+	}
+
+	memset(_imageData, 0, a._frameCount * a._width * a._height);
 }
 
 /**
@@ -75,10 +94,11 @@ char unsigned* AlpFrames::operator()(const long frameNum) {
 	try {
 		if (frameNum <= 0 && frameNum > _frameCount)
 			throw std::invalid_argument("Error: `frameNum` invalid.");
-	} catch (std::invalid_argument& e) {
-			std::cerr << e.what() << std::endl;
-			Pause();
-			exit(1);
+	}
+	catch (std::invalid_argument& e) {
+		std::cerr << e.what() << std::endl;
+		Pause();
+		exit(1);
 	}
 	return _imageData + frameNum * _width * _height;
 }
@@ -107,7 +127,8 @@ char unsigned& AlpFrames::at(const long frameNum, const long x, const long y) {
 			throw std::invalid_argument("Error: `frameNum` invalid.");
 		if (x < 0 || x > _width || y < 0 || y > _height)
 			throw std::invalid_argument("Error: Pixel out of bounds.");
-	} catch (std::invalid_argument& e) {
+	}
+	catch (std::invalid_argument& e) {
 		std::cerr << e.what() << std::endl;
 		Pause();
 		exit(1);
@@ -144,7 +165,8 @@ void AlpFrames::fillRect(const long frameNum, const long x, const long y,
 			throw std::invalid_argument("Error: Attempting to draw out of bounds.");
 		if (rectWidth <= 0)
 			throw std::invalid_argument("Error: `rectWidth` must be a positive integer.");
-	} catch (std::invalid_argument& e) {
+	}
+	catch (std::invalid_argument& e) {
 		std::cerr << e.what() << std::endl;
 		Pause();
 		exit(1);
@@ -171,11 +193,12 @@ void AlpFrames::fillRect(const long frameNum, const long x, const long y,
 void AlpFrames::drawMovingSquare(long frames, long width, long height) {
 	const long squareWidth = height / 5, dx = width - squareWidth, dy = height - squareWidth;
 	for (long frame = 0; frame < frames; frame++) {
-		try{
+		try {
 			if (frames < 2)
 				throw std::invalid_argument("Error: `frames` must be a positive integer.");
 			fillRect(frame, frame * dx / (frames - 1), frame * dy / (frames - 1), squareWidth, squareWidth, 255);
-		} catch (const std::runtime_error& e) {
+		}
+		catch (const std::runtime_error& e) {
 			std::cerr << e.what() << std::endl;
 			Pause();
 			exit(1);
@@ -198,15 +221,16 @@ void AlpFrames::drawMovingSquare(long frames, long width, long height) {
 * @throw invalid_argument if the frames parameter is not equal to 1.
 */
 void AlpFrames::drawSquare(long frames, long vPad, long hPad, long sqSize) {
-		try {
-			if (frames != 1)
-				throw std::invalid_argument("Error: `frames` must be 1.");
-				fillRect(frames - 1, hPad, vPad, sqSize, sqSize, 255);
-		} catch (const std::invalid_argument& e) {
-			std::cerr << e.what() << std::endl;
-			Pause();
-			exit(1);
-		}
+	try {
+		if (frames != 1)
+			throw std::invalid_argument("Error: `frames` must be 1.");
+		fillRect(frames - 1, hPad, vPad, sqSize, sqSize, 255);
+	}
+	catch (const std::invalid_argument& e) {
+		std::cerr << e.what() << std::endl;
+		Pause();
+		exit(1);
+	}
 }
 
 /**
@@ -229,8 +253,8 @@ void AlpFrames::drawVertialLines(long frames, long hPad, long spacing, long lWid
 		if (frames != 1)
 			throw std::invalid_argument("Error: `frames` must be 1.");
 		for (int i = hPad; i < _width / lWidth; i++) {
-			if(i%2 == 0)
-				fillRect(frames - 1, i*lWidth, 0, lWidth, _height, 255);
+			if (i % 2 == 0)
+				fillRect(frames - 1, i * lWidth, 0, lWidth, _height, 255);
 			i += spacing;
 		}
 	}
@@ -311,9 +335,9 @@ void AlpFrames::drawGrid(long frames, long vPad, long hPad, long vSpacing, long 
 void AlpFrames::drawCheckerBoard(long frames, long vPad, long hPad, long sqSize) {
 	for (int i = 0; i < _height / sqSize; i++) {
 		for (int j = 0; j < _width / sqSize; j++) {
-			if (j%2 == 0 && i%2 == 0 || j % 2 == 0 && i == 0)
+			if (j % 2 == 0 && i % 2 == 0 || j % 2 == 0 && i == 0)
 				drawSquare(frames, hPad + i * sqSize, vPad + j * sqSize, sqSize);
-			else if (j%2 != 0 && i%2 != 0)
+			else if (j % 2 != 0 && i % 2 != 0)
 				drawSquare(frames, hPad + i * sqSize, vPad + j * sqSize, sqSize);
 		}
 	}
