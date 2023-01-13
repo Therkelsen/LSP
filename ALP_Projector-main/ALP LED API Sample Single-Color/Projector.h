@@ -1,14 +1,10 @@
-﻿
-// ALP LED API Sample Single-Color.cpp : Defines the entry point for the console application.
-
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "alp.h"
 #include "AlpUserInterface.h"
 #include "AlpFrames.h"
 #include <conio.h>
 #include <crtdbg.h>
 #include <vector>
-#include <variant>
 #include <iostream>
 #include <stdexcept>
 
@@ -39,8 +35,14 @@ public:
 		_LEDCurrent = 0, _LEDJunctionTemp = 0, deviceNum = 0, initFlag = 0;
 		_sleepTime = 1000;
 
-		// _ASSERT creates a macro
-		_ASSERT(sizeof(_AlpSynchGate) == 18);
+		try {
+			if (sizeof(_AlpSynchGate) != 18)
+				throw std::invalid_argument("Size of `_AlpSynchGate` invalid. Should be 18 bytes.");
+		} catch (std::invalid_argument& e) {
+			std::cerr << e.what() << std::endl;
+			Pause();
+			exit(1);
+		}
 		// memset: Sets the first `num` bytes of the block of memory pointed by `ptr` to the specified value
 		// (interpreted as an `unsigned char`). memset is used, as `_AlpSynchGate` already has memory allocated.
 		memset(&_AlpSynchGate, 0, sizeof(_AlpSynchGate));
