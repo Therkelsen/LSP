@@ -27,13 +27,12 @@ public:
 		const long width, const long height, const char unsigned pixelValue);
 
 	void drawMovingSquare(long frames, long width, long height);
-	void drawSquare(long frames, long pWidth, long pHeight, long sqSize);
+	void drawSquare(long frames, long vPad, long hPad, long sqSize);
 	void drawVertialLines(long frames, long hPad, long spacing, long pWidth, long pHeight, long lWidth);
 	void drawHorizontalLines(long frames, long hPad, long spacing, long pWidth, long pHeight, long lWidth);
 	void drawGrid(long frames, long vPad, long hPad, long vSpacing,
 		long hSpacing, long pWidth, long pHeight, long lWidth);
-	void drawTartanSquares(long frames, long vPad, long hPad,
-		long vSpacing, long hSpacing, long pWidth, long pHeight, long lWidth);
+	void drawTartanSquares(long frames, long hPad, long vPad, long pWidth, long pHeight, long sqSize);
 
 	// These members contain parameters, supplied during construction.
 	const long _frameCount, _width, _height;

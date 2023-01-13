@@ -84,12 +84,12 @@ int Projector::generatePattern(const long frames, const long spacing, const unsi
 	setImageDataParams(frames, spacing, pictureTime, brightness);
 
 	AlpFrames Image(_frames, _width, _height);
-	//Image.drawSquare(_frames, _width, _height, 720);
+	//Image.drawSquare(_frames, 0, 0, _width, _height, 100);
 	//Image.drawMovingSquare(_frames, _width, _height);
 	//Image.drawVertialLines(_frames, 0, 10, _width, _height, 2);
 	//Image.drawHorizontalLines(_frames, 0, 10, _width, _height, 2);
-	Image.drawGrid(_frames, 0, 0, 10, 10, _width, _height, 2);
-	//Image.drawTartanSquares(_frames, 0, 0, 10, 10, _width, _height, 2);
+	//Image.drawGrid(_frames, 0, 0, 10, 10, _width, _height, 2);
+	Image.drawTartanSquares(_frames, 0, 0, _width, _height, 50);
 
 	VERIFY_ALP_NO_ECHO(AlpSeqAlloc(AlpDevId, _bitPlanes, _frames, &AlpSeqId));
 	VERIFY_ALP_NO_ECHO(AlpSeqPut(AlpDevId, AlpSeqId, _pictureOffset, _frames, Image(0)));

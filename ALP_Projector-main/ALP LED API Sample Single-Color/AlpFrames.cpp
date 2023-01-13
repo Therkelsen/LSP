@@ -67,10 +67,8 @@ void AlpFrames::drawMovingSquare(long frames, long width, long height) {
 	}
 }
 
-void AlpFrames::drawSquare(long frames, long pWidth, long pHeight, long sqSize) {
+void AlpFrames::drawSquare(long frames, long vPad, long hPad, long sqSize) {
 	//add xy-pos
-	long hPad = pWidth / 2 - sqSize / 2;
-	long vPad = pHeight / 2 - sqSize / 2;
 		try {
 			if (frames != 1)
 				throw std::invalid_argument("Error: Frame count must be 1.");
@@ -121,6 +119,15 @@ void AlpFrames::drawGrid(long frames, long vPad, long hPad, long vSpacing, long 
 	drawHorizontalLines(frames, vPad, vSpacing, pWidth, pHeight, lWidth);
 }
 
-void AlpFrames::drawTartanSquares(long frames, long vPad, long hPad, long vSpacing, long hSpacing, long pWidth, long pHeight, long lWidth) {
+void AlpFrames::drawTartanSquares(long frames, long vPad, long hPad, long pWidth, long pHeight, long sqSize) {
 	//Use draw squares and stack them in a for-loop
+	for (int i = 0; i < pHeight / sqSize; i++) {
+		for (int j = 0; j < pWidth / sqSize; j++) {
+			if (j%2 == 0 && i%2 == 0 || j % 2 == 0 && i == 0)
+				drawSquare(frames, vPad + i * sqSize, vPad + j * sqSize, sqSize);
+			else if (j%2 != 0 && i%2 != 0)
+				drawSquare(frames, vPad + i * sqSize, vPad + j * sqSize, sqSize);
+		}
+	}
+	
 }

@@ -1,3 +1,5 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(517,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (ALP LED API Sample Single-Color.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  Projector.cpp
-  ALP LED API Sample Single-Color - VS2019.vcxproj -> C:\Users\Therkelsen\Documents\Github\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\Debug\ALP LED API Sample Single-Color - VS2019.exe
+  AlpFrames.cpp
+C:\Users\Simons Lenovo\Documents\GitHub\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\AlpFrames.cpp(100,55): warning C4100: 'vPad': unreferenced formal parameter
+C:\Users\Simons Lenovo\Documents\GitHub\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\AlpFrames.cpp(122,64): warning C4100: 'hPad': unreferenced formal parameter
+  ALP LED API Sample Single-Color - VS2019.vcxproj -> C:\Users\Simons Lenovo\Documents\GitHub\LSP\ALP_Projector-main\ALP LED API Sample Single-Color\Debug\ALP LED API Sample Single-Color - VS2019.exe
