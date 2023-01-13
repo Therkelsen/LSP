@@ -11,8 +11,9 @@ The project with pre-existing code was handed to us by Madav, who took sample co
 - [x] Finding an alternative to memset, for programming patterns
 - [x] Add good comments / fix the ones that arent
 - [x] Get familiar with the drawing class (AlpFrames) and the use of memset
-- [ ] Refactor AlpFrames class (Rename everything, remove inheritance, move drawing out of constructor, remove nonsense _ASSERTs)
+- [x] Refactor AlpFrames class (Rename everything, remove inheritance, move drawing out of constructor, remove nonsense _ASSERTs)
 - [ ] Add projector patterns that seem useful (i.e. Vertical lines, checkerboard, grids, etc.)
+- [ ] Replace _ASSERT statements with proper error handling
 - [ ] Add OpenCV integration (convert image to grayscale image object, image objects to 1d array for memset)
 - [ ] Prepare for front-end integration, i.e. GUI's etc.
 - [ ] Remember good comments!
